@@ -33,6 +33,7 @@ socketFile
 
 
 E.g.:
+
     require('graphdat').profile({
         netSync: false,
         gdSync: {
