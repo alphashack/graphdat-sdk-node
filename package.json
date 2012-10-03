@@ -6,6 +6,9 @@
   "homepage": "http://www.graphdat.com",
   "keywords": ["profiling", "instrumentation", "response time", "real-time", "performance", "bottlenecks"],
   "contributors": [
+    "David Clark <evil@alphashack.com>", 
+    "Pete Diermert <pete@alphashack.com>",
+    "Gareth Stokes <danger@alphashack.com>"
   ],
   "main": "./index.js",
   "directories": {
