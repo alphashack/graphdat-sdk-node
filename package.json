@@ -1,9 +1,9 @@
 {
-  "name" : "nodetime",
-  "version" : "0.2.0",
+  "name" : "graphdat",
+  "version" : "0.3.0",
   "description" : "Performance Profiler",
   "author": "Dmitri Melikyan <dmitri@rapidlogix.com>",
-  "homepage": "http://nodetime.com",
+  "homepage": "http://www.graphdat.com",
   "keywords": ["profiling", "instrumentation", "response time", "real-time", "performance", "bottlenecks"],
   "contributors": [
   ],
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/alphashack/nodetime.git"
+    "url": "git://github.com/alphashack/graphdat-sdk-node.git"
   },
   "optionalDependencies": {
     "timekit": "*"
