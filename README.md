@@ -4,16 +4,17 @@ Graphdat SDK
 This is a Node package forked from "nodetime". It works on linux (and the like) and OSX.
 
 ###Installation
-Add our nodetime dependency to your package.json:
+Add our graphdat dependency to your package.json:
 
     "graphdat": "git://github.com/alphashack/graphdat-sdk-node.git"
 
 Install the package:
 
     npm install
-Before any other require statements in your app, require nodetime:
 
-    require('nodetime').profile({
+Before any other require statements in your app, require graphdat:
+
+    require('graphdat').profile({
         netSync: false,
         gdSync: {}
     });
@@ -21,7 +22,7 @@ Before any other require statements in your app, require nodetime:
 
 ###Configuration
 Configuration information can be passed to the library via the gdSync property in the call to profile. 
-The presence of the gdSync property enables sending data to the agent, to disable either remove the property, set it to false, or remove the nodetime require altogether.
+The presence of the gdSync property enables sending data to the agent, to disable either remove the property, set it to false, or remove the graphdat require altogether.
 
 
 
@@ -32,7 +33,7 @@ socketFile
 
 
 E.g.:
-    require('nodetime').profile({
+    require('graphdat').profile({
         netSync: false,
         gdSync: {
             socketFile: "/tmp/testing.sock"
@@ -48,9 +49,9 @@ The library will log errors to the console.
 ###Uninstallation
 Remove the require('graphdat') line from your .js file
 
-Remove the nodetime depecndency from your package.json
+Remove the graphdat depecndency from your package.json
 
-Delete the nodetime directory in your node_modules directory
+Delete the graphdat directory in your node_modules directory
 
 ## License
 
