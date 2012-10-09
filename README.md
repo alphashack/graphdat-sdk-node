@@ -1,11 +1,11 @@
 Graphdat SDK Node
-=================
+====
 
-http://support.graphdat.com/knowledgebase/articles/92908-node-js-instrumentation
+Please see the [Graphdat SDK Node documentation](http://support.graphdat.com/knowledgebase/articles/92908-node-js-instrumentation) for full instructions on how to instrument your Node.js apps with Graphdat.
 
 ----
 
-This package is Copyright (c) 2012 Alphashack.
+This package is Copyright 2012 Alphashack.
 
 ----
 
