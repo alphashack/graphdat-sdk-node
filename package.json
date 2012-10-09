@@ -2,9 +2,9 @@
   "name" : "graphdat",
   "version" : "0.3.0",
   "description" : "App Instrumentation",
-  "author": "David Clark <evil@alphashack.com>",
+  "author": "Alphashack <support@graphdat.com>",
   "homepage": "http://www.graphdat.com",
-  "keywords": ["instrumentation", "performance", "response time", "real-time"],
+  "keywords": ["graphdat", "instrumentation", "performance", "response time", "real-time"],
   "contributors": [
     "David Clark <evil@alphashack.com>",
     "Pete Diermert <pete@alphashack.com>",
