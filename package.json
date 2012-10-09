@@ -1,18 +1,18 @@
 {
   "name" : "graphdat",
   "version" : "0.3.0",
-  "description" : "Performance Profiler",
-  "author": "Dmitri Melikyan <dmitri@rapidlogix.com>",
+  "description" : "App Instrumentation",
+  "author": "Alphashack <support@graphdat.com>",
   "homepage": "http://www.graphdat.com",
-  "keywords": ["profiling", "instrumentation", "response time", "real-time", "performance", "bottlenecks"],
+  "keywords": ["graphdat", "instrumentation", "performance", "response time", "real-time"],
   "contributors": [
-    "David Clark <evil@alphashack.com>", 
+    "David Clark <evil@alphashack.com>",
     "Pete Diermert <pete@alphashack.com>",
     "Gareth Stokes <danger@alphashack.com>"
   ],
   "main": "./index.js",
   "directories": {
-    "lib" : "./lib/nodetime"
+    "lib" : "./lib/graphdat"
   },
   "repository": {
     "type": "git",
@@ -22,23 +22,13 @@
     "timekit": "*"
   },
   "devDependencies": {
-    "express": ">=2.5.0",
-    "socket.io": ">=0.9.0",
-    "redis": ">=0.7.0",
-    "mongodb": ">=0.9.0",
-    "mysql": ">=0.9.5",
-    "pg": ">=0.6.17",
-    "memcached": ">=0.0.8",
-    "memcache": ">=0.3.0",
-    "cassandra-client": ">=0.9.1",
-    "cassandra": ">=0.1.0",
     "underscore": "1.2.2"
   },
   "engines": {
-    "node" : ">=0.6.0"
+    "node" : ">=0.8.1"
   },
   "licenses": [{
     "type": "MIT",
-    "url": "http://github.com/dmelikyan/nodetime/raw/master/LICENSE"
+    "url": "http://github.com/alphashack/graphdat-sdk-node/raw/master/LICENSE"
   }]
 }
