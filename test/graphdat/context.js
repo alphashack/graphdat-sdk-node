@@ -78,17 +78,17 @@ _tests.enter_adds_child = function() {
 
 _tests.enter_creates_child_payload = function() {
     // Arrange
-    var subject = new context();
     var name = 'testname';
     var payload = 'testpayload';
     var createpayloadcalled = 0;
     var createpayload = function() { createpayloadcalled++; return payload; };
+	var subject = new context(createpayload);
 
-    // Act
-    subject.enter(name, createpayload);
+	// Act
+    subject.enter(name);
 
     // Assert
-    assert.equal(1, createpayloadcalled);
+    assert.equal(2, createpayloadcalled);
     assert.equal(name, subject._root._children[0]._name)
     assert.equal(payload, subject._root._children[0]._payload)
 };
@@ -121,44 +121,41 @@ _tests.construct_current_context_at_root = function() {
 
 _tests.enter_current_context_goes_in = function() {
     // Arrange
-    var rootpayload = 'rootpayload';
-    var subject = new context(function() { return rootpayload; });
+    var payload = 'payload';
     var childname = 'childname';
-    var childpayload = 'childpayload';
-    var createchildpayloadcalled = 0;
-    var createchildpayload = function() { createchildpayloadcalled++; return childpayload; };
+    var createpayloadcalled = 0;
+    var createpayload = function() { createpayloadcalled++; return payload; };
+	var subject = new context(createpayload);
 
-    // Act
-    subject.enter(childname, createchildpayload);
+	// Act
+    subject.enter(childname);
 
     // Assert
     assert.equal(subject._root._children[0], subject._current);
-    assert.equal(1, createchildpayloadcalled);
+    assert.equal(2, createpayloadcalled);
     assert.equal(childname, subject._current._name)
-    assert.equal(childpayload, subject._current._payload);
+    assert.equal(payload, subject._current._payload);
     assert.equal(subject._root, subject._root._children[0]._parent);
 };
 
 _tests.enter_current_context_goes_in_multiple = function() {
     // Arrange
-    var rootpayload = 'rootpayload';
-    var subject = new context(function() { return rootpayload; });
+    var payload = 'payload';
     var child1name = 'child1name';
-    var child1payload = 'child1payload';
-    subject.enter(child1name, function() { return child1payload; });
     var child2name = 'child2name';
-    var child2payload = 'child2payload';
-    var createchild2payloadcalled = 0;
-    var createchild2payload = function() { createchild2payloadcalled++; return child2payload; };
+    var createpayloadcalled = 0;
+    var createpayload = function() { createpayloadcalled++; return payload; };
+	var subject = new context(createpayload);
+	subject.enter(child1name);
 
-    // Act
-    subject.enter(child2name, createchild2payload);
+	// Act
+    subject.enter(child2name);
 
     // Assert
     assert.equal(subject._root._children[0]._children[0], subject._current);
-    assert.equal(1, createchild2payloadcalled);
+    assert.equal(3, createpayloadcalled);
     assert.equal(child2name, subject._current._name)
-    assert.equal(child2payload, subject._current._payload);
+    assert.equal(payload, subject._current._payload);
     assert.equal(subject._root, subject._root._children[0]._children[0]._parent._parent);
 };
 
@@ -178,20 +175,20 @@ _tests.leave_current_context_comes_out = function() {
 
 _tests.leave_calls_finish = function() {
     // Arrange
-    var subject = new context();
     var childname = 'childname';
-    var childpayload = 'childpayload';
+    var payload = 'payload';
     var finishcalled = 0;
     var gotpayload = null;
-    var finish = function(payload) { finishcalled++; gotpayload = payload; };
-    subject.enter(childname, function() { return childpayload; }, finish);
+    var finish = function(p) { finishcalled++; gotpayload = p; };
+	var subject = new context(function() { return payload; }, finish);
+	subject.enter(childname);
 
     // Act
     subject.leave();
 
     // Assert
     assert.equal(1, finishcalled);
-    assert.equal(childpayload, gotpayload)
+    assert.equal(payload, gotpayload)
 };
 
 _tests.done_calls_finish = function() {
@@ -227,21 +224,15 @@ _tests.exit_pops_out_to_root_and_calls_finish = function() {
     var finishcalled = 0;
     var finish = function() { finishcalled++; };
     var subject = new context(finish);
-    var finish1called = 0;
-    var finish1 = function() { finish1called++; };
-    subject.enter(null, null, finish1);
-    var finish2called = 0;
-    var finish2 = function() { finish2called++; };
-    subject.enter(null, null, finish2);
+    subject.enter();
+    subject.enter();
 
     // Act
     subject.exit();
 
     // Assert
     assert.equal(subject._root, subject._current);
-    assert.equal(1, finishcalled, 'Root finish call count');
-    assert.equal(1, finish1called, 'First child finish call count');
-    assert.equal(1, finish2called, 'Second child finish call count');
+    assert.equal(3, finishcalled, 'Finish call count');
 };
 
 _tests.is_valid_after_construct = function() {
@@ -323,106 +314,93 @@ _tests.objectify_builds_with_payload = function() {
 
 _tests.objectify_builds_one_child = function() {
     // Arrange
-    var rootpayload = 'rootpayload';
-    var subject = new context(function() { return rootpayload; });
-    var childpayload = 'childpayload';
-    subject.enter(null, function() { return childpayload; });
+    var payload = 'payload';
+    var subject = new context(function() { return payload; });
+    subject.enter();
     subject.leave();
 
-    var build = function(payload) { return { property: payload } };
+    var build = function(p) { return { property: p } };
 
     // Act
     var obj = subject.objectify(build);
 
     // Assert
-    assert.equivalent({property:rootpayload,children:[{property:childpayload}]}, obj);
+    assert.equivalent({property:payload,children:[{property:payload}]}, obj);
 };
 
 _tests.flatten_builds_one_child = function() {
     // Arrange
-    var rootpayload = 'rootpayload';
-    var subject = new context(function() { return rootpayload; });
+    var payload = 'payload';
+    var subject = new context(function() { return payload; });
     var childname = 'childname';
-    var childpayload = 'childpayload';
-    subject.enter(childname, function() { return childpayload; });
+    subject.enter(childname);
     subject.leave();
 
-    var build = function(payload) { return { property: payload } };
+    var build = function(p) { return { property: p } };
 
     // Act
     var obj = subject.flatten(build);
 
     // Assert
-    assert.equivalent([{name:'/',property:rootpayload},{name:'/'+childname,property:childpayload}], obj);
+    assert.equivalent([{name:'/',property:payload},{name:'/'+childname,property:payload}], obj);
 };
 
 _tests.objectify_builds_multiple_child = function() {
     // Arrange
-    var rootpayload = 'rootpayload';
-    var subject = new context(function() { return rootpayload; });
-    var child1payload = 'child1payload';
-    subject.enter(null, function() { return child1payload; });
+    var payload = 'payload';
+    var subject = new context(function() { return payload; });
+    subject.enter("one");
     subject.leave();
-    var child2payload = 'child2payload';
-    subject.enter(null, function() { return child2payload; });
+    subject.enter("two");
     subject.leave();
-    var child3payload = 'child3payload';
-    subject.enter(null, function() { return child3payload; });
+    subject.enter("three");
     subject.leave();
 
-    var build = function(payload) { return { property: payload } };
+    var build = function(p) { return { property: p } };
 
     // Act
     var obj = subject.objectify(build);
 
     // Assert
-    assert.equivalent({property:rootpayload,children:[{property:child1payload},{property:child2payload},{property:child3payload}]}, obj);
+    assert.equivalent({property:payload,children:[{property:payload,name:"one"},{property:payload,name:"two"},{property:payload,name:"three"}]}, obj);
 };
 
 _tests.objectify_builds_nested_child = function() {
     // Arrange
-    var rootpayload = 'rootpayload';
-    var subject = new context(function() { return rootpayload; });
-    var child1payload = 'child1payload';
-    subject.enter(null, function() { return child1payload; });
-    var child2payload = 'child2payload';
-    subject.enter(null, function() { return child2payload; });
-    subject.leave();
-    var child3payload = 'child3payload';
-    subject.enter(null, function() { return child3payload; });
+    var payload = 'payload';
+    var subject = new context(function() { return payload; });
+    subject.enter("one");
+    subject.enter("two");
     subject.leave();
     subject.leave();
 
-    var build = function(payload) { return { property: payload } };
+    var build = function(p) { return { property: p } };
 
     // Act
     var obj = subject.objectify(build);
 
     // Assert
-    assert.equivalent({property:rootpayload,children:[{property:child1payload,children:[{property:child2payload},{property:child3payload}]}]}, obj);
+    assert.equivalent({property:payload,children:[{property:payload,name:"one",children:[{property:payload,name:"two"}]}]}, obj);
 };
 
 _tests.flatten_builds_nested_child = function() {
     // Arrange
-    var rootpayload = 'rootpayload';
-    var subject = new context(function() { return rootpayload; });
-    var child1payload = 'child1payload';
-    subject.enter('child1', function() { return child1payload; });
-    var child2payload = 'child2payload';
-    subject.enter('child2', function() { return child2payload; });
+    var payload = 'payload';
+    var subject = new context(function() { return payload; });
+    subject.enter('child1');
+    subject.enter('child2');
     subject.leave();
-    var child3payload = 'child3payload';
-    subject.enter('child3', function() { return child3payload; });
+    subject.enter('child3');
     subject.leave();
     subject.leave();
 
-    var build = function(payload) { return { property: payload } };
+    var build = function(p) { return { property: p } };
 
     // Act
     var obj = subject.flatten(build);
 
     // Assert
-    assert.equivalent([{name:'/',property:rootpayload},{name:'/child1',property:child1payload},{name:'/child1/child2',property:child2payload},{name:'/child1/child3',property:child3payload}], obj);
+    assert.equivalent([{name:'/',property:payload},{name:'/child1',property:payload},{name:'/child1/child2',property:payload},{name:'/child1/child3',property:payload}], obj);
 };
 
 _tests.objectify_throws_if_not_at_root = function() {
@@ -489,8 +467,8 @@ _tests.objectify_create_enter_done = function() {
 
 _tests.leave_returns_payload = function() {
     // Arrange
-    var subject = new context();
-    subject.enter(null, function() { return "payload"; });
+    var subject = new context(function() { return "payload"; });
+    subject.enter(null);
 
     // Act
     var payload = subject.leave();
@@ -559,6 +537,32 @@ _tests.log_exceptions = function() {
 
     // Assert
     assert.equal(1, loggercalled);
+};
+
+_tests.second_call_reuses_existing = function() {
+	// Arrange
+	var create = function(p) {
+		if(!p) return {create: 1, finish: 0};
+		p.create++;
+		return p;
+	}
+	var finish = function(p) {
+		p.finish++;
+		return p;
+	}
+	var build = function(p) { return { property: p } };
+
+	// Act
+	var subject = new context(create, finish);
+	subject.enter('child');
+	subject.leave();
+	subject.enter('child');
+	subject.leave();
+	subject.exit();
+	var obj = subject.flatten(build);
+
+	// Assert
+	assert.equivalent([{name:'/',property:{create: 1, finish: 1}},{name:'/child',property:{create: 2, finish: 2}}], obj);
 };
 
 (function() {
