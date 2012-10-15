@@ -600,6 +600,19 @@ _tests.second_call_reuses_existing = function() {
 	assert.equivalent([{name:'/',property:{create: 1, finish: 1}},{name:'/child',property:{create: 2, finish: 2}}], obj);
 };
 
+_tests.forward_slash_is_replaced = function() {
+	// Arrange
+	var subject = new context();
+
+	// Act
+	subject.enter("test/one");
+	subject.leave();
+	var obj = subject.flatten();
+
+	// Assert
+	assert.equivalent([{name:'/'},{name:'/test_one'}], obj);
+};
+
 (function() {
     var testcount = _.keys(_tests).length;
     var errorcount = 0;
