@@ -209,14 +209,21 @@ _tests.done_calls_finish = function() {
 
 _tests.done_throws_if_not_at_root = function() {
     // Arrange
-    var payload = new context();
+	var loggercalled = 0;
+	var logmessage;
+	var logger = function(msg) { loggercalled++; logmessage = msg; };
+    var payload = new context(null, null, logger);
     payload.enter();
 
     // Await
-    await.throw(_tests.done_throws_if_not_at_root, 'Context error: not at root when "done" called');
+    //await.throw(_tests.done_throws_if_not_at_root, 'Context error: not at root when "done" called');
 
     // Act
     payload.done();
+
+	// Assert
+	assert.equal(1, loggercalled);
+	assert.equal('Context error: not at root when "done" called', logmessage);
 };
 
 _tests.exit_pops_out_to_root_and_calls_finish = function() {
@@ -405,37 +412,58 @@ _tests.flatten_builds_nested_child = function() {
 
 _tests.objectify_throws_if_not_at_root = function() {
     // Arrange
-    var payload = new context();
-    payload.enter();
+	var loggercalled = 0;
+	var logmessage;
+	var logger = function(msg) { loggercalled++; logmessage = msg; };
+	var payload = new context(null, null, logger);
+	payload.enter();
 
     // Await
-    await.throw(_tests.objectify_throws_if_not_at_root, 'Context error: not at root when "objectify" called');
+    //await.throw(_tests.objectify_throws_if_not_at_root, 'Context error: not at root when "objectify" called');
 
     // Act
     payload.objectify();
+
+	// Assert
+	assert.equal(1, loggercalled);
+	assert.equal('Context error: not at root when "objectify" called', logmessage);
 };
 
 _tests.flatten_throws_if_not_at_root = function() {
     // Arrange
-    var payload = new context();
-    payload.enter();
+	var loggercalled = 0;
+	var logmessage;
+	var logger = function(msg) { loggercalled++; logmessage = msg; };
+	var payload = new context(null, null, logger);
+	payload.enter();
 
     // Await
-    await.throw(_tests.flatten_throws_if_not_at_root, 'Context error: not at root when "flatten" called');
+    //await.throw(_tests.flatten_throws_if_not_at_root, 'Context error: not at root when "flatten" called');
 
     // Act
     payload.flatten();
+
+	// Assert
+	assert.equal(1, loggercalled);
+	assert.equal('Context error: not at root when "flatten" called', logmessage);
 };
 
 _tests.leave_throws_at_root = function() {
     // Arrange
-    var payload = new context();
+	var loggercalled = 0;
+	var logmessage;
+	var logger = function(msg) { loggercalled++; logmessage = msg; };
+	var payload = new context(null, null, logger);
 
-    // Await
-    await.throw(_tests.leave_throws_at_root, 'Context error: cannot "leave" from root, you might want "done"');
+	// Await
+    //await.throw(_tests.leave_throws_at_root, 'Context error: cannot "leave" from root, you might want "done"');
 
     // Act
     payload.leave();
+
+	// Assert
+	assert.equal(1, loggercalled);
+	assert.equal('Context error: cannot "leave" from root, you might want "done"', logmessage);
 };
 
 _tests.objectify_builds_with_name = function() {
@@ -502,16 +530,23 @@ _tests.exit_returns_payload = function() {
 
 _tests.leave_throws_if_name_incorrect = function() {
     // Arrange
-    var subject = new context();
-    var child1 = "child1";
+	var loggercalled = 0;
+	var logmessage;
+	var logger = function(msg) { loggercalled++; logmessage = msg; };
+	var subject = new context(null, null, logger);
+	var child1 = "child1";
     var notchild1 = "not the same value"
     subject.enter("child1");
 
     // Await
-    await.throw(_tests.leave_throws_if_name_incorrect, 'Context error: tried to leave "' + notchild1 + '" but current context is "' + child1 + '"');
+    //await.throw(_tests.leave_throws_if_name_incorrect, 'Context error: tried to leave "' + notchild1 + '" but current context is "' + child1 + '"');
 
     // Act
     subject.leave(notchild1);
+
+	// Assert
+	assert.equal(1, loggercalled);
+	assert.equal('Context error: tried to leave "' + notchild1 + '" but current context is "' + child1 + '"', logmessage);
 };
 
 _tests.leave_does_not_throw_if_name_not_specified = function() {
