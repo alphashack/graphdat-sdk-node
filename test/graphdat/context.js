@@ -212,7 +212,7 @@ _tests.done_throws_if_not_at_root = function() {
 	var loggercalled = 0;
 	var logmessage;
 	var logger = function(msg) { loggercalled++; logmessage = msg; };
-    var payload = new context(null, null, logger);
+    var payload = new context(null, null, null, logger);
     payload.enter();
 
     // Await
@@ -415,7 +415,7 @@ _tests.objectify_throws_if_not_at_root = function() {
 	var loggercalled = 0;
 	var logmessage;
 	var logger = function(msg) { loggercalled++; logmessage = msg; };
-	var payload = new context(null, null, logger);
+	var payload = new context(null, null, null, logger);
 	payload.enter();
 
     // Await
@@ -434,7 +434,7 @@ _tests.flatten_throws_if_not_at_root = function() {
 	var loggercalled = 0;
 	var logmessage;
 	var logger = function(msg) { loggercalled++; logmessage = msg; };
-	var payload = new context(null, null, logger);
+	var payload = new context(null, null, null, logger);
 	payload.enter();
 
     // Await
@@ -453,7 +453,7 @@ _tests.leave_throws_at_root = function() {
 	var loggercalled = 0;
 	var logmessage;
 	var logger = function(msg) { loggercalled++; logmessage = msg; };
-	var payload = new context(null, null, logger);
+	var payload = new context(null, null, null, logger);
 
 	// Await
     //await.throw(_tests.leave_throws_at_root, 'Context error: cannot "leave" from root, you might want "done"');
@@ -533,7 +533,7 @@ _tests.leave_throws_if_name_incorrect = function() {
 	var loggercalled = 0;
 	var logmessage;
 	var logger = function(msg) { loggercalled++; logmessage = msg; };
-	var subject = new context(null, null, logger);
+	var subject = new context(null, null, null, logger);
 	var child1 = "child1";
     var notchild1 = "not the same value"
     subject.enter("child1");
@@ -561,7 +561,7 @@ _tests.leave_does_not_throw_if_name_not_specified = function() {
 _tests.log_exceptions = function() {
     // Arrange
     var loggercalled = 0;
-    subject = new context(null, null, function(ex) { loggercalled++; } );
+    subject = new context(null, null, null, function(ex) { loggercalled++; } );
     subject.enter("a");
 
     // Act
@@ -611,6 +611,139 @@ _tests.forward_slash_is_replaced = function() {
 
 	// Assert
 	assert.equivalent([{name:'/'},{name:'/test_one'}], obj);
+};
+
+_tests.merge_adds_single_unique_child = function() {
+	// Arrange
+	var parent = new context();
+	parent.enter("one");
+	var child = new context();
+	child.enter("two");
+	child.exit();
+
+	// Act
+	parent.merge(child);
+	parent.leave("one");
+
+	// Assert
+	var obj = parent.flatten();
+	assert.equivalent([{name:'/'},{name:'/one'},{name:'/one/two'}], obj);
+};
+
+_tests.merge_combines_single_duplicate_child = function() {
+	// Arrange
+	var combinecalled = 0;
+	var combine = function() { combinecalled++; };
+	var parent = new context(null, null, combine);
+	parent.enter("one");
+	parent.enter("two");
+	parent.leave("two");
+	var child = new context();
+	child.enter("two");
+	child.exit();
+
+	// Act
+	parent.merge(child);
+	parent.leave("one");
+
+	// Assert
+	var obj = parent.flatten();
+	assert.equivalent([{name:'/'},{name:'/one'},{name:'/one/two'}], obj);
+	assert.equal(1, combinecalled);
+};
+
+_tests.merge_combines_single_duplicate_child_with_payload = function() {
+	// Arrange
+	var payload = "payload";
+	var combined = "combined";
+	var create = function(p) { return payload };
+	var combine = function(p) { return combined };
+	var build = function(p) { return { property: p } };
+	var parent = new context(create, null, combine);
+	parent.enter("one");
+	parent.enter("two");
+	parent.leave("two");
+	var child = new context(create, null, null);
+	child.enter("two");
+	child.exit();
+
+	// Act
+	parent.merge(child);
+	parent.leave("one");
+
+	// Assert
+	var obj = parent.flatten(build);
+	assert.equivalent([{name:'/',property:payload},{name:'/one',property:payload},{name:'/one/two',property:combined}], obj);
+};
+
+_tests.merge_adds_multiple_level_unique_children = function() {
+	// Arrange
+	var parent = new context();
+	parent.enter("one");
+	var child = new context();
+	child.enter("two");
+	child.enter("three");
+	child.exit();
+
+	// Act
+	parent.merge(child);
+	parent.leave("one");
+
+	// Assert
+	var obj = parent.flatten();
+	assert.equivalent([{name:'/'},{name:'/one'},{name:'/one/two'},{name:'/one/two/three'}], obj);
+};
+
+_tests.merge_combines_multiple_level_duplicate_first_level_children_with_payload = function() {
+	// Arrange
+	var payload = "payload";
+	var combined = "combined";
+	var create = function(p) { return payload };
+	var combine = function(p) { return combined };
+	var build = function(p) { return { property: p } };
+	var parent = new context(create, null, combine);
+	parent.enter("one");
+	parent.enter("two");
+	parent.leave("two");
+	var child = new context(create, null, null);
+	child.enter("two");
+	child.enter("three");
+	child.exit();
+
+	// Act
+	parent.merge(child);
+	parent.leave("one");
+
+	// Assert
+	var obj = parent.flatten(build);
+	assert.equivalent([{name:'/',property:payload},{name:'/one',property:payload},{name:'/one/two',property:combined},{name:'/one/two/three',property:payload}], obj);
+};
+
+_tests.merge_combines_multiple_level_duplicate_multiple_levels_children_with_payload = function() {
+	// Arrange
+	var payload = "payload";
+	var combined = "combined";
+	var create = function(p) { return payload };
+	var combine = function(p) { return combined };
+	var build = function(p) { return { property: p } };
+	var parent = new context(create, null, combine);
+	parent.enter("one");
+	parent.enter("two");
+	parent.enter("three");
+	parent.leave("three");
+	parent.leave("two");
+	var child = new context(create, null, null);
+	child.enter("two");
+	child.enter("three");
+	child.exit();
+
+	// Act
+	parent.merge(child);
+	parent.leave("one");
+
+	// Assert
+	var obj = parent.flatten(build);
+	assert.equivalent([{name:'/',property:payload},{name:'/one',property:payload},{name:'/one/two',property:combined},{name:'/one/two/three',property:combined}], obj);
 };
 
 (function() {
