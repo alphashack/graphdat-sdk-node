@@ -746,6 +746,19 @@ _tests.merge_combines_multiple_level_duplicate_multiple_levels_children_with_pay
 	assert.equivalent([{name:'/',property:payload},{name:'/one',property:payload},{name:'/one/two',property:combined},{name:'/one/two/three',property:combined}], obj);
 };
 
+_tests.multiple_forward_slashes_are_replaced = function() {
+	// Arrange
+	var subject = new context();
+
+	// Act
+	subject.enter("test/one/two");
+	subject.leave();
+	var obj = subject.flatten();
+
+	// Assert
+	assert.equivalent([{name:'/'},{name:'/test_one_two'}], obj);
+};
+
 (function() {
     var testcount = _.keys(_tests).length;
     var errorcount = 0;
