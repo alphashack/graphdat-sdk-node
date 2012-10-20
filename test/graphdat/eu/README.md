@@ -5,19 +5,20 @@ This test suite makes web requests to server.js in order to test for accurate in
 
 To run tests -
 
-1.  Stop the graphdat agent if it is running
+__Step 1__ - Stop the graphdat agent if it is running  
 
 
     sudo /etc/init.d/graphdat stop
-    
-2.  Start the server.js
+
+
+__Step 2__ - Start the server.js
 
 
     node server.js
 
-3.  Start the client.js
+
+__Step 3__ - Start the client.js
 
 
     node client.js
-
 
