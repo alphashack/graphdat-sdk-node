@@ -1,7 +1,7 @@
 End User tests
 ==============
 
-This test suite makes web requests to server.js in order to test for accurate instrumentation readings.  The server.js file represents a series of instrumentation scenarios that we expect most end-users to use in their applications.  This file should not contain anything other than what a typical user require.  To validate that accurate data is recorded by the instrumentation this client impersonates the graphdat-agent socket endpoint and intercepts outbound measures.
+This test suite makes web requests to server.js in order to test for accurate instrumentation readings.  The server.js file represents a series of instrumentation scenarios that we expect most end-users to use in their applications.  For this reason, server.js should not contain anything other than what a typical user would require.  To validate that accurate data is recorded by the instrumentation this client impersonates the graphdat-agent socket endpoint and intercepts outbound measures.
 
 To run tests -
 
