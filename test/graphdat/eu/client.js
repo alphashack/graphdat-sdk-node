@@ -1,2 +1,0 @@
-// End user tests client
-

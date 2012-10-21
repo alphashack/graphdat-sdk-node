@@ -1,0 +1,36 @@
+{
+	"requests":[
+		{
+			"path":"/",
+			"port":1337
+		}
+	],
+	"expect":  {
+		"start":"Server running.*",
+		"data": [
+			{
+				"type":        "Sample",
+				"source":      "HTTP",
+				"route":       "GET /",
+				"responsetime":1.359,
+				"timestamp":   1350790386737.148,
+				"cputime":     1.241,
+				"pid":         "88456",
+				"context":     [
+					{
+						"firsttimestampoffset":0.06005859375,
+						"responsetime":        1.359,
+						"callcount":           1,
+						"name":                "/"
+					},
+					{
+						"firsttimestampoffset": 0.343994140625,
+						"responsetime": 1001.929,
+						"callcount": 1,
+						"name": "/timer"
+					}
+				]
+			}
+		]
+	}
+}
