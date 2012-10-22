@@ -1,0 +1,24 @@
+{
+  "name" : "graphdat-test",
+  "version" : "0.1.0",
+  "description" : "App Instrumentation test harness",
+  "author": "Alphashack <support@graphdat.com>",
+  "homepage": "http://www.graphdat.com",
+  "keywords": ["graphdat", "instrumentation", "performance", "response time", "real-time"],
+  "contributors": [
+    "David Clark <evil@alphashack.com>",
+    "Pete Diermert <pete@alphashack.com>",
+    "Gareth Stokes <danger@alphashack.com>"
+  ],
+  "main": "./harness.js",
+  "dependencies": {
+    "graphdat": "*"
+  },
+  "engines": {
+    "node" : ">=0.8.1"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://github.com/alphashack/graphdat-sdk-node/raw/master/LICENSE"
+  }]
+}

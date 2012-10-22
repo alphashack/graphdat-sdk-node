@@ -10,6 +10,9 @@ var APP_START_WAIT_MAX = 3000;
 // Time allowed between last request and instrumentation all data received
 var DATA_WAIT_MAX = 3000;
 
+// Time variance allowed for response durations, as ms
+var RESPONSE_TIME_VARIANCE = 100;
+
 var _failed = 0;
 var _succeeded = 0;
 var _skipped = 0;
@@ -67,6 +70,7 @@ function runTests()
 				else
 					_succeeded++;
 				
+				//setTimeout(iterateTests, 1000);
 				process.nextTick(iterateTests);
 			});
 		}
@@ -112,14 +116,13 @@ function runSingleTest(svrfile,scnfile,cb)
 	var fDisconnected = false;
 	
 	var proc;
-	
+	var stdout = '';
+	var stderr = '';
+
 	function launch()
 	{
 		proc = _spawn(process.argv[0], [svrfile],{cwd:__dirname + '/tests/',env:process.env});
 	
-		var stdout = '';
-		var stderr = '';
-		
 		proc.on('close', function(code)
 		{
 			if (!fTestComplete)
@@ -155,7 +158,7 @@ function runSingleTest(svrfile,scnfile,cb)
 	
 		proc.stderr.on('data', function(data)
 		{
-			console.log('err: ' + data.toString());
+			//console.log('err: ' + data.toString());
 			stderr += data.toString();
 		});
 	}
@@ -238,6 +241,12 @@ function runSingleTest(svrfile,scnfile,cb)
 
 	function validate()
 	{
+		// Check for errors
+		if (scn.expect.noerror && stderr.length > 0)
+		{
+			return cb('Unexpected runtime errors found -->\n' + stderr);
+		}
+		
 		for(var i=0; i < allData.length; i++)
 		{
 			try
@@ -246,8 +255,7 @@ function runSingleTest(svrfile,scnfile,cb)
 			}
 			catch(ex)
 			{
-
-				cb(_util.format('instrumentation data incorrect, expected -->\n%s\n\nreceived -->\n%s\n\n%s', JSON.stringify(scn.expect.data[i],null,3), JSON.stringify(allData[i], null, 3), ex));
+				return cb(_util.format('instrumentation data incorrect, expected -->\n%s\n\nreceived -->\n%s\n\n%s', JSON.stringify(scn.expect.data[i],null,3), JSON.stringify(allData[i], null, 3), ex));
 			}
 		}
 
@@ -305,8 +313,13 @@ function compareData(ds,da)
 	if (da.context.length != ds.context.length)
 		throw 'Received ' + da.context.length + ' context items, expected ' + ds.context.length;
 
+	checkResponseTime(ds.responsetime, da.responsetime, 'root request');
+	
 	for(var i=0; i < ds.context.length; i++)
-		compareObject(ds.context[i], da.context[i],['callcount','name']);	
+	{
+		compareObject(ds.context[i], da.context[i],['callcount','name']);
+		checkResponseTime(ds.context[i].responsetime, da.context[i].responsetime, 'context ' + ds.context[i].name);
+	}
 }
 	
 // scenario to actual object compare, only caring about req properties
@@ -317,4 +330,18 @@ function compareObject(s,a,req)
 		if ((prop in s) && s[prop] != a[prop])
 			throw 'Recieved "' + a[prop] + '" for "' + prop + '", expected "' + s[prop] + '"';
 	});
+}
+
+function checkResponseTime(scenario, actual, context)
+{
+	if (scenario && !actual)
+		throw 'A response time is missing for ' + context;
+	
+	if (!scenario && actual)
+		return;
+	
+	var delta = Math.abs(scenario - actual);
+	
+	if (delta > RESPONSE_TIME_VARIANCE)
+		throw 'Response time of ' + scenario + ' expected, variance of +-' + RESPONSE_TIME_VARIANCE + 'ms, but ' + actual + ' was received for ' + context;
 }

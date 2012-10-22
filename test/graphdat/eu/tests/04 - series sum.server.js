@@ -1,6 +1,7 @@
 require('graphdat');
 
 var http = require('http');
+
 http.createServer(function (req, res)
 {
 	req.gdcall(fun1, function()
@@ -14,13 +15,16 @@ console.log('Server running at http://127.0.0.1:1337/');
 
 function fun1(cb)
 {
-	setTimeout(function()
+	var c = 0;
+	for(var i=0; i < 10; i++)
 	{
 		cb.gdcall(fun2, function()
 		{
-			cb();
+			if (++c == 10)
+				cb();
 		});
-	}, 500);
+		
+	}
 }
 
 function fun2(cb)
@@ -29,5 +33,4 @@ function fun2(cb)
 	{
 		cb();
 	}, 500);
-	
 }
