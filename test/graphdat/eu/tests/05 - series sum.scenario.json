@@ -12,28 +12,28 @@
 				"type": "Sample",
 				"source": "HTTP",
 				"route": "GET /",
-				"responsetime": 1005.87,
+				"responsetime": 1000,
 				"timestamp": 1350880093056.126,
 				"cputime": 6.212,
 				"pid": "46512",
 				"context": [
 					{
 						"firsttimestampoffset": 0.06591796875,
-						"responsetime": 1005.87,
+						"responsetime": 1000,
 						"callcount": 1,
 						"cputime": 6.212,
 						"name": "/"
 					},
 					{
 						"firsttimestampoffset": 0.487060546875,
-						"responsetime": 1004.734,
+						"responsetime": 1000,
 						"callcount": 1,
 						"cputime": 5.084,
 						"name": "/fun1"
 					},
 					{
 						"firsttimestampoffset": 0.3779296875,
-						"responsetime": 1003.502,
+						"responsetime": 1000,
 						"callcount": 10,
 						"cputime": 0.164,
 						"name": "/fun1/fun2"
