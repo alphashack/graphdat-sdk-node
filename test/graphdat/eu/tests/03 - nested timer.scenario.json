@@ -9,29 +9,29 @@
 		"start":"Server running.*",
 		"data": [
 			{
-				"type":        "Sample",
-				"source":      "HTTP",
-				"route":       "GET /",
-				"responsetime":1.359,
-				"timestamp":   1350790386737.148,
-				"cputime":     1.241,
-				"pid":         "88456",
-				"context":     [
+				"type": "Sample",
+				"source": "HTTP",
+				"route": "GET /",
+				"responsetime": 1003.085,
+				"timestamp": 1350867194800.425,
+				"cputime": 3.29,
+				"pid": "37013",
+				"context": [
 					{
-						"firsttimestampoffset": 0.046142578125,
-						"responsetime": 1003.698,
+						"firsttimestampoffset": 0.06201171875,
+						"responsetime": 1003.085,
 						"callcount": 1,
 						"name": "/"
 					},
 					{
-						"firsttimestampoffset": 0.279052734375,
-						"responsetime": 1002.661,
+						"firsttimestampoffset": 0.3291015625,
+						"responsetime": 1002.065,
 						"callcount": 1,
 						"name": "/fun1"
 					},
 					{
-						"firsttimestampoffset": 501.134033203125,
-						"responsetime": 501.286,
+						"firsttimestampoffset": 500.462890625,
+						"responsetime": 501.403,
 						"callcount": 1,
 						"name": "/fun1/fun2"
 					}

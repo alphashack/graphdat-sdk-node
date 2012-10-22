@@ -5,8 +5,7 @@ http.createServer(function (req, res)
 {
 	req.graphdat.begin('timer');
 	
-	// delay
-	setTimeout(function()
+	slowcall(function()
 	{
 		req.graphdat.end('timer');
 		
@@ -15,3 +14,9 @@ http.createServer(function (req, res)
 	}, 1000);
 }).listen(1337, '127.0.0.1');
 console.log('Server running at http://127.0.0.1:1337/');
+
+
+function slowcall(cb)
+{
+	setTimeout(cb, 1000);
+}

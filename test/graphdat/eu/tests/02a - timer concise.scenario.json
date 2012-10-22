@@ -7,27 +7,28 @@
 	],
 	"expect":  {
 		"start":"Server running.*",
+		"noerror" : true,
 		"data": [
 			{
 				"type": "Sample",
 				"source": "HTTP",
 				"route": "GET /",
-				"responsetime": 1001.833,
-				"timestamp": 1350866206166.34,
-				"cputime": 2.86,
-				"pid": "36359",
+				"responsetime": 1002.582,
+				"timestamp": 1350867141111.07,
+				"cputime": 2.458,
+				"pid": "36976",
 				"context": [
 					{
-						"firsttimestampoffset": 0.046875,
-						"responsetime": 1001.833,
+						"firsttimestampoffset": 0.048095703125,
+						"responsetime": 1002.582,
 						"callcount": 1,
 						"name": "/"
 					},
 					{
-						"firsttimestampoffset": 0.544921875,
-						"responsetime": 1000.501,
+						"firsttimestampoffset": 0.471923828125,
+						"responsetime": 1001.436,
 						"callcount": 1,
-						"name": "/timer"
+						"name": "/slowcall"
 					}
 				]
 			}
