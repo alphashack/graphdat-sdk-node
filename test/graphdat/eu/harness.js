@@ -54,15 +54,15 @@ function runTests()
 		var testName = svr.split('.')[0];
 
 		var i = scenarios.indexOf(testName + '.scenario.json');
-		if (i == -1)
+		if(process.argv[2] && testName.indexOf(process.argv[2]) !== 0)
 		{
-			errout('Missing matching scenario for %s, skipping test', svr);
+			infout('Skipping %s', testName);
 			_skipped++;
 			process.nextTick(iterateTests);
 		}
-		else if(process.argv[2] && testName != process.argv[2])
+		else if (i == -1)
 		{
-			infout('Skipping %s', testName);
+			errout('Missing matching scenario for %s, skipping test', svr);
 			_skipped++;
 			process.nextTick(iterateTests);
 		}
