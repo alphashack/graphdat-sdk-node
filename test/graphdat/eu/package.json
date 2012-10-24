@@ -12,7 +12,8 @@
   ],
   "main": "./harness.js",
   "dependencies": {
-    "graphdat": "*"
+    "graphdat": "*",
+	"express": "*"
   },
   "engines": {
     "node" : ">=0.8.1"

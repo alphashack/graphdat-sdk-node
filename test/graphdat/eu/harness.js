@@ -54,15 +54,15 @@ function runTests()
 		var testName = svr.split('.')[0];
 
 		var i = scenarios.indexOf(testName + '.scenario.json');
-		if (i == -1)
+		if(process.argv[2] && testName.indexOf(process.argv[2]) !== 0)
 		{
-			errout('Missing matching scenario for %s, skipping test', svr);
+			infout('Skipping %s', testName);
 			_skipped++;
 			process.nextTick(iterateTests);
 		}
-		else if(process.argv[2] && testName != process.argv[2])
+		else if (i == -1)
 		{
-			infout('Skipping %s', testName);
+			errout('Missing matching scenario for %s, skipping test', svr);
 			_skipped++;
 			process.nextTick(iterateTests);
 		}
@@ -88,9 +88,9 @@ function runTests()
 function finish()
 {
 	if (!_failed && !_skipped)
-		infout('Finished - all successful!');
+		infout('\033[32mFinished - all successful!\033[0m');
 	else
-		infout('Finished - %d failed, %d succeeded, %d skipped', _failed, _succeeded, _skipped);
+		infout('%sFinished - %d failed, %d succeeded, %d skipped\033[0m', _failed ? '\033[31m' : '\033[33m', _failed, _succeeded, _skipped);
 
 	process.exit(0);
 }

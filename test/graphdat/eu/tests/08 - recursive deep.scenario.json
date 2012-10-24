@@ -1,0 +1,59 @@
+{
+	"requests":[
+		{
+			"path":"/",
+			"port":1337
+		}
+	],
+	"expect":  {
+		"start":"Server running.*",
+		"data": [
+			{
+				"type": "Sample",
+				"source": "HTTP",
+				"route": "GET /",
+				"responsetime": 1,
+				"timestamp": 1350880093056.126,
+				"cputime": 6.212,
+				"pid": "46512",
+				"context": [
+					{
+						"firsttimestampoffset": 0.06591796875,
+						"responsetime": 1,
+						"callcount": 1,
+						"cputime": 6.212,
+						"name": "/"
+					},
+					{
+						"firsttimestampoffset": 0.06591796875,
+						"responsetime": 1,
+						"callcount": 1,
+						"cputime": 6.212,
+						"name": "/fun1"
+					},
+					{
+						"firsttimestampoffset": 0.487060546875,
+						"responsetime": 1,
+						"callcount": 10,
+						"cputime": 5.084,
+						"name": "/fun1/A"
+					},
+					{
+						"firsttimestampoffset": 0.3779296875,
+						"responsetime": 1,
+						"callcount": 10,
+						"cputime": 0.164,
+						"name": "/fun1/A/B"
+					},
+					{
+						"firsttimestampoffset": 0.3779296875,
+						"responsetime": 1,
+						"callcount": 10,
+						"cputime": 0.164,
+						"name": "/fun1/A/B/C"
+					}
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"requests":[
+		{
+			"path":"/fun/123",
+			"port":1337
+		}
+	],
+	"expect":  {
+		"start":"Server running.*",
+		"data": [
+			{
+				"type": "Sample",
+				"source": "HTTP",
+				"route": "GET /fun/:id",
+				"responsetime": 1,
+				"timestamp": 1350880093056.126,
+				"cputime": 6.212,
+				"pid": "46512",
+				"context": [
+					{
+						"firsttimestampoffset": 0.06591796875,
+						"responsetime": 1,
+						"callcount": 1,
+						"cputime": 6.212,
+						"name": "/"
+					},
+					{
+						"firsttimestampoffset": 0.487060546875,
+						"responsetime": 1,
+						"callcount": 1,
+						"cputime": 5.084,
+						"name": "/fun"
+					}
+				]
+			}
+		]
+	}
+}
