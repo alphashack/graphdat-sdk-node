@@ -88,9 +88,9 @@ function runTests()
 function finish()
 {
 	if (!_failed && !_skipped)
-		infout('Finished - all successful!');
+		infout('\033[32mFinished - all successful!\033[0m');
 	else
-		infout('Finished - %d failed, %d succeeded, %d skipped', _failed, _succeeded, _skipped);
+		infout('%sFinished - %d failed, %d succeeded, %d skipped\033[0m', _failed ? '\033[31m' : '\033[33m', _failed, _succeeded, _skipped);
 
 	process.exit(0);
 }

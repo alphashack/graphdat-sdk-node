@@ -102,7 +102,8 @@ _tests.enter_parent_child_relation = function() {
     subject.enter(name);
 
     // Assert
-    assert.equal(subject._root, subject._root._children[0]._parent);
+	assert.equal(1, subject._root._children[0]._parents.length);
+	assert.equal(subject._root, subject._root._children[0]._parents.pop());
 };
 
 _tests.construct_current_context_at_root = function() {
@@ -135,7 +136,8 @@ _tests.enter_current_context_goes_in = function() {
     assert.equal(2, createpayloadcalled);
     assert.equal(childname, subject._current._name)
     assert.equal(payload, subject._current._payload);
-    assert.equal(subject._root, subject._root._children[0]._parent);
+	assert.equal(1, subject._root._children[0]._parents.length);
+	assert.equal(subject._root, subject._root._children[0]._parents.pop());
 };
 
 _tests.enter_current_context_goes_in_multiple = function() {
@@ -156,7 +158,9 @@ _tests.enter_current_context_goes_in_multiple = function() {
     assert.equal(3, createpayloadcalled);
     assert.equal(child2name, subject._current._name)
     assert.equal(payload, subject._current._payload);
-    assert.equal(subject._root, subject._root._children[0]._children[0]._parent._parent);
+	assert.equal(1, subject._root._children[0]._children[0]._parents.length);
+	assert.equal(1, subject._root._children[0]._children[0]._parents[0]._parents.length);
+	assert.equal(subject._root, subject._root._children[0]._children[0]._parents[0]._parents[0]);
 };
 
 _tests.leave_current_context_comes_out = function() {
@@ -170,7 +174,7 @@ _tests.leave_current_context_comes_out = function() {
 
     // Assert
     assert.equal(subject._root, subject._current);
-    assert.equal(subject._root, subject._root._children[0]._parent);
+	assert.equal(0, subject._root._children[0]._parents.length);
 };
 
 _tests.leave_calls_finish = function() {
@@ -593,7 +597,7 @@ _tests.second_call_reuses_existing = function() {
 	subject.leave();
 	subject.enter('child');
 	subject.leave();
-	subject.exit();
+	subject.done();
 	var obj = subject.flatten(build);
 
 	// Assert
@@ -762,26 +766,31 @@ _tests.multiple_forward_slashes_are_replaced = function() {
 (function() {
     var testcount = _.keys(_tests).length;
     var errorcount = 0;
+	var skippedcount = 0;
     for(var test in _tests) {
+	    if(process.argv[2] && (test.indexOf(process.argv[2]) < 0)) {
+		    skippedcount++;
+		    continue;
+	    }
         try {
             _tests[test]();
             if(_tests[test].expect_exception) {
                 errorcount++;
-                console.error('%s failed - %s', test, _tests[test].failed_exception_error);
+                console.error('%s \033[31mfailed\033[0m - %s', test, _tests[test].failed_exception_error);
             }
             else {
-                console.log('%s succeeded', test);
+                console.log('%s \033[32msucceeded\033[0m', test);
             }
         }
         catch(ex) {
             if(_tests[test].expect_exception === ex) {
-                console.log('%s succeeded', test);
+                console.log('%s \033[32msucceeded\033[0m', test);
             }
             else {
                 errorcount++;
-                console.error('%s failed - %s', test, ex);
+                console.error('%s \033[31mfailed\033[0m - %s', test, ex);
             }
         }
     }
-    console.info('%s - %d error%s for %d test%s', errorcount == 0 ? 'Success' : 'Fail', errorcount, errorcount == 1 ? '' : 's', testcount, testcount == 1 ? '' : 's');
+    console.info('%s - %d error%s for %d test%s (%d skipped)\033[0m', errorcount == 0 ? '\033[32mSuccess' : '\033[31mFail', errorcount, errorcount == 1 ? '' : 's', testcount, testcount == 1 ? '' : 's', skippedcount);
 })();
