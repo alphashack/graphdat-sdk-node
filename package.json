@@ -20,8 +20,8 @@
   },
   "optionalDependencies": {
     "timekit": "*"
-  },
-  "devDependencies": {
+  },	
+  "dependencies": {
     "underscore": "1.2.2"
   },
   "engines": {
