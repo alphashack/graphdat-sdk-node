@@ -1,6 +1,6 @@
 {
   "name" : "graphdat",
-  "version" : "0.4.3",
+  "version" : "0.4.1",
   "description" : "App Instrumentation",
   "author": "Alphashack <support@graphdat.com>",
   "homepage": "http://www.graphdat.com",
@@ -20,7 +20,7 @@
   },
   "optionalDependencies": {
     "timekit": "*"
-  },
+  },	
   "dependencies": {
     "underscore": "1.2.2"
   },
