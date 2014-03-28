@@ -1,5 +1,8 @@
-Graphdat SDK Node
-====
+# Graphdat Node SDK
+
+*Node Extension for Graphdat*
+
+--
 
 Graphdat is a tool for graphing and analyzing your application and server performance in real time.
 
