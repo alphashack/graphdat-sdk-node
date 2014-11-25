@@ -6,8 +6,8 @@
   "homepage": "http://www.graphdat.com",
   "keywords": ["graphdat", "instrumentation", "performance", "response time", "real-time", "realtime", "dashboard", "measure"],
   "contributors": [
-    "Michael Moran <mike@alphashack.com>",
-    "Pete Diermert <pete@alphashack.com>"
+    "Michael Moran <mike@boundary.com>",
+    "Pete Diermert <pete@boundary.com>"
   ],
   "main": "./index.js",
   "directories": {
@@ -16,9 +16,6 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/alphashack/graphdat-sdk-node.git"
-  },
-  "optionalDependencies": {
-    "timekit": "*"
   },
   "dependencies": {
     "underscore": "1.2.2"
