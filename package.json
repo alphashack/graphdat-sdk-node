@@ -1,6 +1,6 @@
 {
   "name" : "graphdat",
-  "version" : "0.4.9",
+  "version" : "0.4.10",
   "description" : "A heart rate monitor for your application",
   "author": "Graphdat <support@graphdat.com>",
   "homepage": "http://www.graphdat.com",
