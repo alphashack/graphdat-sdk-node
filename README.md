@@ -2,6 +2,8 @@
 
 *Node Extension for Graphdat*
 
+## DEPRECATED - This is now longer in use or supported.
+
 --
 
 Graphdat is a tool for graphing and analyzing your application and server performance in real time.
